@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { DashboardPagesComponent } from './gifs/components/dashboard-pages/dashboard-pages.component';
-import { TrendingPageComponent } from './gifs/components/trending-page/trending-page.component';
-import { SearchPageComponent } from './gifs/components/search-page/search-page.component';
+import { TrendingPageComponent } from './gifs/pages/trending-page/trending-page.component';
+import { SearchPageComponent } from './gifs/pages/search-page/search-page.component';
+import { DashboardPagesComponent } from './gifs/pages/dashboard-pages/dashboard-pages.component';
 
 export const routes: Routes = [
   {
