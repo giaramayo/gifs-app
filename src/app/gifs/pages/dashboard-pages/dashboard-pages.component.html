@@ -1,9 +1,10 @@
-<div class="bg-gray-900 antialiased text-slate-300 selection:bg-blue-600 selection:text-white">
-  <div class="flex flex-col relative w-screen">
-    <gifs-side-menu />
+<div class="bg-gray-900 antialiased text-slate-300 selection:bg-blue-600 selection:text-white min-h-screen flex flex-col">
+
+  <gifs-side-menu />
+
+  <div id="content" class="ml-[250px] max-w-5xl bg-white/10 rounded-lg p-6 flex-1">
+    <router-outlet />
+    <gifs-footer class="w-screen" />
   </div>
 
-  <div id="content" class="ml-[250px] max-w-5xl bg-white/10 rounded-lg p-6">
-    <router-outlet />
-  </div>
 </div>

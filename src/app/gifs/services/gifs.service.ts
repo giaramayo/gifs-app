@@ -66,32 +66,40 @@ export class GifService {
       });
   }
 
-  searchGifs(query: string, trendingPage?: number): Observable<Gif[]> {
-    let pages = trendingPage ?? 0;
-    return this.http
-      .get<GiphyResponse>(`${environment.giphyUrl}/gifs/search`, {
-        params: {
-          api_key: environment.giphyApiKey,
-          limit: 20,
-          offset: pages * 20,
-          q: query,
-        },
+ searchGifs(query: string, trendingPage?: number): Observable<Gif[]> {
+  let pages = trendingPage ?? 0;
+  return this.http
+    .get<GiphyResponse>(`${environment.giphyUrl}/gifs/search`, {
+      params: {
+        api_key: environment.giphyApiKey,
+        limit: 20,
+        offset: pages * 20,
+        q: query,
+      },
+    })
+    .pipe(
+      map(({ data }) => data),
+      map((items) => GifMapper.mapGiphyItemsToGifArray(items)),
+      tap((items) => {
+        this.searchHistory.update((history) => {
+          const key = query.toLowerCase();
+          const currentItems = history[key] ?? [];
+          const newHistory = {
+            ...history,
+            [key]: [...currentItems, ...items],
+          };
+          // Mantener solo las últimas 5 búsquedas
+          const keys = Object.keys(newHistory);
+          if (keys.length > 5) {
+            const keysToRemove = keys.slice(0, keys.length - 5);
+            keysToRemove.forEach((k) => delete newHistory[k]);
+          }
+          return newHistory;
+        });
       })
-      .pipe(
-        map(({ data }) => data),
-        map((items) => GifMapper.mapGiphyItemsToGifArray(items)),
-        // Historial
-        tap((items) => {
-          this.searchHistory.update((history) => {
-            const currentItems = history[query.toLowerCase()] ?? [];
-            return {
-              ...history,
-              [query.toLowerCase()]: [...currentItems, ...items], // acumulamos
-            };
-          });
-        })
-      );
-  }
+    );
+}
+
 
   getHistoryGifs(query: string): Gif[] {
     return this.searchHistory()[query] ?? [];
