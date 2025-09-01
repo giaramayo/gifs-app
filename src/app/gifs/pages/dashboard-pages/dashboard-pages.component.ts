@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SideMenuComponent } from '../../components/side-menu/side-menu.component';
 
@@ -6,6 +6,5 @@ import { SideMenuComponent } from '../../components/side-menu/side-menu.componen
   selector: 'gifs-dashboard-pages',
   imports: [RouterOutlet, SideMenuComponent],
   templateUrl: './dashboard-pages.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardPagesComponent { }
+export default class DashboardPagesComponent { }

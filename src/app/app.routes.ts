@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 import { TrendingPageComponent } from './gifs/pages/trending-page/trending-page.component';
 import { SearchPageComponent } from './gifs/pages/search-page/search-page.component';
-import { DashboardPagesComponent } from './gifs/pages/dashboard-pages/dashboard-pages.component';
+import DashboardPagesComponent from './gifs/pages/dashboard-pages/dashboard-pages.component';
+import GifHistoryComponent from './gifs/pages/gif-history/gif-history.component';
 
 export const routes: Routes = [
   {
@@ -15,6 +16,10 @@ export const routes: Routes = [
       {
         path: 'search',
         loadComponent: () => SearchPageComponent
+      },
+      {
+        path: 'history/:query',
+        loadComponent: () => GifHistoryComponent
       },
       {
         path: '**',

@@ -6,7 +6,7 @@ import { SideMenuHeaderComponent } from './side-menu-header/side-menu-header.com
   selector: 'gifs-side-menu',
   imports: [SideMenuHeaderComponent, SideMenuOptionsComponent],
   template: `
-    <div id="menu" class="w-[220px] bg-gray-900 min-h-screen z-10 text-slate-300 fixed left-0 h-screen overflow-y-scroll">
+    <div id="menu" class="w-[250px] bg-gray-900 min-h-screen z-10 text-slate-300 fixed left-0 h-screen">
       <gifs-side-menu-header />
       <gifs-side-menu-options />
     </div>

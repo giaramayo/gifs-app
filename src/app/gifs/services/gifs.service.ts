@@ -22,7 +22,10 @@ export class GifService {
 
   trendingGifs = signal<Gif[]>([]);
   trendingGifsLoading = signal(false);
+
   private trendingPage = signal(0);
+
+  // Arreglos de 3 elementos
   trendingGifGroup = computed<Gif[][]>(() => {
     const groups = [];
     for (let i = 0; i < this.trendingGifs().length; i += 3) {
@@ -49,27 +52,28 @@ export class GifService {
     this.trendingGifsLoading.set(true);
 
     this.http.get<GiphyResponse>(`${environment.giphyUrl}/gifs/trending`, {
-        params: {
-          api_key: environment.giphyApiKey,
-          limit: 20,
-          offset: this.trendingPage() * 20,
-        },
-      })
+      params: {
+        api_key: environment.giphyApiKey,
+        limit: 20,
+        offset: this.trendingPage() * 20,
+      },
+    })
       .subscribe((resp) => {
         const gifs = GifMapper.mapGiphyItemsToGifArray(resp.data);
         this.trendingGifs.update((currentGifs) => [...currentGifs, ...gifs]);
         this.trendingPage.update((page) => page + 1);
-
         this.trendingGifsLoading.set(false);
       });
   }
 
-  searchGifs(query: string): Observable<Gif[]> {
+  searchGifs(query: string, trendingPage?: number): Observable<Gif[]> {
+    let pages = trendingPage ?? 0;
     return this.http
       .get<GiphyResponse>(`${environment.giphyUrl}/gifs/search`, {
         params: {
           api_key: environment.giphyApiKey,
           limit: 20,
+          offset: pages * 20,
           q: query,
         },
       })
@@ -78,10 +82,13 @@ export class GifService {
         map((items) => GifMapper.mapGiphyItemsToGifArray(items)),
         // Historial
         tap((items) => {
-          this.searchHistory.update((history) => ({
-            ...history,
-            [query.toLowerCase()]: items,
-          }));
+          this.searchHistory.update((history) => {
+            const currentItems = history[query.toLowerCase()] ?? [];
+            return {
+              ...history,
+              [query.toLowerCase()]: [...currentItems, ...items], // acumulamos
+            };
+          });
         })
       );
   }
@@ -89,4 +96,12 @@ export class GifService {
   getHistoryGifs(query: string): Gif[] {
     return this.searchHistory()[query] ?? [];
   }
+
+  removeFromHistory(query: string) {
+    this.searchHistory.update(history => {
+      const { [query]: _, ...rest } = history; // elimina la clave
+      return rest;
+    });
+  }
+
 }
