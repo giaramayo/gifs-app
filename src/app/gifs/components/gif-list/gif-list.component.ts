@@ -36,6 +36,8 @@ export class GifListComponent {
   }
 
   onScroll() {
+    if(!this.query()) return;
+
     const scrollTop = window.scrollY;
     const clientHeight = window.innerHeight;
     const scrollHeight = document.body.scrollHeight;

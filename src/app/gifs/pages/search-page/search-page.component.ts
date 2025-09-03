@@ -14,6 +14,7 @@ export class SearchPageComponent {
   query = signal('');
 
   onSearch(query: string) {
+    if(!query) return;
     this.query.set(query);
     this.gifService.searchGifs(query).subscribe((resp) => {
       this.gifs.set(resp);
