@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, ElementRef, HostListener, inject, viewChild } from '@angular/core';
 import { GifService } from '../../services/gifs.service';
 import { ScrollStateService } from 'src/app/shared/services/scroll-state.service';
+import { GifListItemComponent } from "../../components/gif-list/gif-list-item/gif-list-item.component";
 
 @Component({
   selector: 'trending-page',
-  imports: [],
+  imports: [GifListItemComponent],
   templateUrl: './trending-page.component.html',
 })
 export class TrendingPageComponent implements AfterViewInit {
